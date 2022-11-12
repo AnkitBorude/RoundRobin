@@ -1,6 +1,7 @@
 package example;
 
 import java.util.LinkedList;
+import java.util.Scanner;
 
 abstract class Systemab {
 	static protected int countertime = 0;
@@ -124,11 +125,26 @@ public class StaticAccess {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Systemab system = new Scheduler(2);
-		system.create_process("P1", 0, 2);// p2
-		system.create_process("P2", 3, 5);
-		system.create_process("P3", 4, 2);
-		system.create_process("P4", 5, 3);
+		System.out.println("welcome to Round robin Scheduler");
+		System.out.println("plz enter time slot/quantum");
+		Scanner scanner=new Scanner(System.in);
+		int tmp=scanner.nextInt();
+		Systemab system = new Scheduler(tmp);
+		System.out.println("enter How many Process do you want to Schedule");
+		int total_process=scanner.nextInt();
+		int i=0;
+		while(i<total_process)
+		{
+			String name="P"+i;
+			System.out.println("enter Details of"+name);
+			System.out.println("enter Arrival time");
+			int at=scanner.nextInt();
+			System.out.println("enter burst time");
+			int bt=scanner.nextInt();
+			system.create_process(name, at, bt);
+			i++;
+		}
+		scanner.close();
 		system.schedule();
 		system.getAllprocessInfo();
 
