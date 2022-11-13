@@ -1,5 +1,6 @@
 package example;
-
+import java.util.Collection;
+//impementation of round robin scheduling
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -30,7 +31,6 @@ abstract class Systemab {
 		}
 
 		public String toString() {
-
 			return name + " \t " + arrival_time + " \t " + burst_time + " \t " + waiting_time + " \t " + turnaround_time
 					+ "\n";
 		}
@@ -74,11 +74,12 @@ abstract class Systemab {
 	}
 
 	abstract void schedule();
+	abstract int getTotalidletime();
 }
 
 class Scheduler extends Systemab {
 	int quantum = 0;
-
+	private int total_idle_time=0;
 	Scheduler(int q) {
 		quantum = q;
 	}
@@ -86,7 +87,10 @@ class Scheduler extends Systemab {
 	void setQuantum(int q) {
 		quantum = q;
 	}
-
+	int getTotalidletime()
+	{
+		return total_idle_time;
+	}
 	void schedule() {
 		dispatchnewProcess();
 		while (!readyQueue.isEmpty() || !jobQueue.isEmpty()) {
@@ -114,6 +118,7 @@ class Scheduler extends Systemab {
 						dispatchnewProcess();
 					}
 				} else {
+					total_idle_time++;
 					countertime++;
 				}
 			}
@@ -121,7 +126,7 @@ class Scheduler extends Systemab {
 	}
 }
 
-public class StaticAccess {
+class StaticAccess {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -144,9 +149,11 @@ public class StaticAccess {
 			system.create_process(name, at, bt);
 			i++;
 		}
+	
 		scanner.close();
 		system.schedule();
 		system.getAllprocessInfo();
+		System.out.println(system.getTotalidletime());
 
 	}
 
